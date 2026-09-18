@@ -102,13 +102,13 @@ export default function Portfolio1Template({ portfolio }) {
                 <section id="hero" className="min-h-[75vh] flex flex-col justify-center items-start relative">
                     <div className="absolute -top-10 -left-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                    <div className="space-y-6 max-w-3xl z-10">
+                    <div className="space-y-6 max-w-3xl z-10 min-w-0 flex-1">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
                             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                             <span>Available for new projects & roles</span>
                         </div>
 
-                        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none text-white">
+                        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal] text-white">
                             Hi, I'm <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">{full_name}</span>
                         </h1>
 
@@ -362,12 +362,12 @@ export default function Portfolio1Template({ portfolio }) {
                 )}
 
                 {/* Contact Section */}
-                <section id="contact" className="space-y-8">
-                    <div className="glass-card rounded-3xl p-8 sm:p-12 space-y-6 max-w-3xl mx-auto">
+                <section id="contact" className="space-y-8 w-full max-w-full">
+                    <div className="glass-card rounded-3xl p-6 sm:p-12 space-y-6 w-full max-w-3xl mx-auto">
                         <div className="space-y-2 text-center">
                             <span className="text-emerald-400 font-mono text-xs tracking-wider uppercase">// 05. CONTACT</span>
-                            <h2 className="text-3xl sm:text-4xl font-bold text-white">Let's Connect</h2>
-                            <p className="text-slate-400 text-sm max-w-md mx-auto">Have a project in mind or want to discuss opportunities? Send a message below.</p>
+                            <h2 className="text-2xl sm:text-4xl font-bold text-white break-words">Let's Connect</h2>
+                            <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto">Have a project in mind or want to discuss opportunities? Send a message below.</p>
                         </div>
 
                         <form
@@ -375,17 +375,17 @@ export default function Portfolio1Template({ portfolio }) {
                                 e.preventDefault();
                                 setContactSubmitted(true);
                             }}
-                            className="space-y-4 max-w-lg mx-auto pt-2"
+                            className="space-y-4 w-full max-w-lg mx-auto pt-2"
                         >
-                            <div>
+                            <div className="w-full">
                                 <label className="block text-xs font-semibold text-slate-300 mb-1">Name</label>
                                 <input required type="text" placeholder="Your Name" className="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-400" />
                             </div>
-                            <div>
+                            <div className="w-full">
                                 <label className="block text-xs font-semibold text-slate-300 mb-1">Email</label>
                                 <input required type="email" placeholder="your.email@domain.com" className="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-400" />
                             </div>
-                            <div>
+                            <div className="w-full">
                                 <label className="block text-xs font-semibold text-slate-300 mb-1">Message</label>
                                 <textarea required rows={4} placeholder="Your message..." className="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-400"></textarea>
                             </div>

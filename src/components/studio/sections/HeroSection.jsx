@@ -60,7 +60,7 @@ export default function HeroSection({
     return (
       <section className={`${isMobile ? 'p-4' : 'p-4 sm:p-8 md:p-20'} bg-[#FFFDF5] text-black font-sans border-b-3 border-black w-full overflow-x-hidden`}>
         <div className={`max-w-6xl mx-auto ${isMobile ? 'flex flex-col gap-6 text-center' : 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center'}`}>
-          <div className={`${isMobile ? 'w-full space-y-4 flex flex-col items-center' : 'lg:col-span-7 space-y-4 sm:space-y-6'}`}>
+          <div className={`${isMobile ? 'w-full space-y-4 flex flex-col items-center' : 'lg:col-span-7 space-y-4 sm:space-y-6'} min-w-0 flex-1`}>
             {renderItem('hero-tagline', 'Tagline', (
               <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#FFE600] border-2 border-black rounded-md font-mono text-[11px] sm:text-xs font-black text-black shadow-[2px_2px_0px_#000]">
                 <Sparkles className="w-3.5 h-3.5 text-black shrink-0" />
@@ -69,7 +69,7 @@ export default function HeroSection({
             ))}
 
             {renderItem('hero-name', 'Name / Title', (
-              <h1 className={`${isMobile ? 'text-3xl font-black' : 'text-3xl sm:text-5xl lg:text-7xl font-black'} text-black leading-[1.08] tracking-tight uppercase break-words`}>
+              <h1 className={`${isMobile ? 'text-2xl font-black' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black'} text-black leading-tight tracking-tight uppercase break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]`}>
                 {content.name || "I'm Kshitij Pilankar."}
               </h1>
             ))}
@@ -115,7 +115,7 @@ export default function HeroSection({
     return (
       <section className={`${isMobile ? 'p-4' : 'p-4 sm:p-8 md:p-20'} bg-[#FDFBF7] text-[#2C2621] font-serif border-b border-[#E7DEC8] w-full overflow-x-hidden`}>
         <div className={`max-w-6xl mx-auto ${isMobile ? 'flex flex-col gap-6 text-center' : 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center'}`}>
-          <div className={`${isMobile ? 'w-full space-y-4 flex flex-col items-center' : 'lg:col-span-7 space-y-4 sm:space-y-6'}`}>
+          <div className={`${isMobile ? 'w-full space-y-4 flex flex-col items-center' : 'lg:col-span-7 space-y-4 sm:space-y-6'} min-w-0 flex-1`}>
             {renderItem('hero-tagline', 'Tagline', (
               <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 bg-[#F7F3EB] border border-[#E7DEC8] rounded-full text-[11px] sm:text-xs font-sans font-semibold text-[#C2410C]">
                 <Sparkles className="w-3.5 h-3.5 text-[#C2410C] shrink-0" />
@@ -124,7 +124,7 @@ export default function HeroSection({
             ))}
 
             {renderItem('hero-name', 'Name / Title', (
-              <h1 className={`${isMobile ? 'text-3xl font-bold' : 'text-3xl sm:text-5xl lg:text-6xl font-bold'} text-[#2C2621] leading-[1.1] tracking-tight break-words`}>
+              <h1 className={`${isMobile ? 'text-2xl font-bold' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold'} text-[#2C2621] leading-tight tracking-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]`}>
                 {content.name || "I'm Kshitij Pilankar."}
               </h1>
             ))}
@@ -170,7 +170,7 @@ export default function HeroSection({
     return (
       <section className={`${isMobile ? 'p-4 min-h-[360px]' : 'p-4 sm:p-8 md:p-16 min-h-[420px] sm:min-h-[520px]'} flex flex-col justify-center bg-[#090d16] text-white font-mono relative overflow-hidden border-b border-cyan-500/20 w-full`}>
         <div className={`max-w-6xl mx-auto w-full ${isMobile ? 'flex flex-col gap-6 text-center' : 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center'}`}>
-          <div className={`${isMobile ? 'w-full space-y-4 flex flex-col items-center' : 'lg:col-span-7 space-y-4 sm:space-y-6'}`}>
+          <div className={`${isMobile ? 'w-full space-y-4 flex flex-col items-center' : 'lg:col-span-7 space-y-4 sm:space-y-6'} min-w-0 flex-1`}>
             {renderItem('hero-tagline', 'Tagline', (
               <div className="inline-flex items-center space-x-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-[11px] sm:text-xs font-mono text-cyan-400 shadow-[0_0_15px_rgba(0,245,255,0.15)]">
                 <Terminal className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
@@ -179,7 +179,7 @@ export default function HeroSection({
             ))}
 
             {renderItem('hero-name', 'Name / Title', (
-              <h1 className={`${isMobile ? 'text-3xl' : 'text-3xl sm:text-5xl lg:text-6xl'} font-black text-white leading-tight tracking-tight break-words`}>
+              <h1 className={`${isMobile ? 'text-2xl' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl'} font-black text-white leading-tight tracking-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]`}>
                 {content.name || "Kshitij Pilankar"}
               </h1>
             ))}
@@ -232,7 +232,7 @@ export default function HeroSection({
   // 4. Default Bento-Minimal Hero Variant
   return (
     <section className={`${isMobile ? 'p-4 min-h-[360px]' : 'p-4 sm:p-8 md:p-20 min-h-[420px] sm:min-h-[520px]'} flex flex-col items-center justify-center bg-[#F8FAFC] text-slate-900 font-sans text-center border-b border-slate-200 w-full overflow-x-hidden`}>
-      <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 flex flex-col items-center">
+      <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 flex flex-col items-center min-w-0 flex-1 w-full">
         {renderItem('hero-tagline', 'Tagline', (
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-full text-[11px] sm:text-xs font-bold text-slate-800 shadow-xs max-w-full">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
@@ -241,7 +241,7 @@ export default function HeroSection({
         ))}
 
         {renderItem('hero-name', 'Name / Title', (
-          <h1 className={`${isMobile ? 'text-3xl font-black' : 'text-3xl sm:text-5xl lg:text-7xl font-black'} text-slate-900 leading-[1.08] tracking-tight break-words`}>
+          <h1 className={`${isMobile ? 'text-2xl font-black' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black'} text-slate-900 leading-tight tracking-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]`}>
             {content.name || "I'm Kshitij Pilankar."}
           </h1>
         ))}

@@ -41,13 +41,13 @@ export default function LightCorporateTemplate({ portfolio }) {
             </div>
           )}
           
-          <div className="space-y-4 text-center md:text-left flex-1">
+          <div className="space-y-4 text-center md:text-left flex-1 min-w-0">
             {/* Tag Sticker */}
             <div className="inline-block bg-[#FF70A6] text-black font-extrabold px-3 py-1 border-2 border-black rounded-full text-xs uppercase rotate-[-2deg] shadow-[2px_2px_0px_0px_#000]">
               ★ Portfolio Spotlight
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-heading font-black tracking-tight leading-none text-[#0F172A]">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal] text-[#0F172A]">
               {full_name}
             </h1>
             <p className="text-lg md:text-xl font-heading font-bold text-brand-light-primary">

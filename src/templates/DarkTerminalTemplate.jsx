@@ -66,8 +66,8 @@ export default function DarkTerminalTemplate({ portfolio, viewMode = 'desktop' }
                 <img src={profile_image_url} alt={full_name} className="w-full h-full object-cover" />
               </div>
             )}
-            <div className="space-y-2">
-              <h1 className={`${isMobile ? 'text-2xl font-black' : 'text-3xl md:text-4xl font-extrabold'} text-white tracking-tight break-words`}>{full_name}</h1>
+            <div className="space-y-2 min-w-0 flex-1">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]">{full_name}</h1>
               <Prompt color="text-[#38BDF8]">{headline}</Prompt>
               <p className="text-xs text-[#94A3B8] leading-relaxed max-w-2xl font-sans">{bio}</p>
             </div>

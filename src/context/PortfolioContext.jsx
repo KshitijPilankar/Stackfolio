@@ -64,12 +64,12 @@ export const PortfolioProvider = ({ children }) => {
     setError(null);
 
     try {
-      // 1. First check if a saved draft exists in localStorage
+      // Fast sub-200ms local hydration check
       const localDraftRaw = localStorage.getItem(DRAFT_KEY);
       if (localDraftRaw) {
         try {
           const localDraft = JSON.parse(localDraftRaw);
-          if (localDraft && typeof localDraft === 'object') {
+          if (localDraft && typeof localDraft === 'object' && (localDraft.full_name || localDraft.user_id)) {
             setPortfolio(localDraft);
             setLoading(false);
             return;

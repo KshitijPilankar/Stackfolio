@@ -35,8 +35,8 @@ export default function MinimalEditorialTemplate({ portfolio, viewMode = 'deskto
             {profile_image_url && (
               <img src={profile_image_url} alt={full_name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover grayscale hover:grayscale-0 transition-all border border-[#E5E5E5] shrink-0" />
             )}
-            <div className="space-y-2 sm:space-y-3">
-              <h1 className={`${isMobile ? 'text-3xl font-serif font-bold' : 'text-4xl md:text-5xl font-serif font-bold'} tracking-tight leading-tight text-[#111] break-words`}>
+            <div className="space-y-2 sm:space-y-3 min-w-0 flex-1">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold tracking-tight leading-tight text-[#111] break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]">
                 {full_name}
               </h1>
               <p className="text-sm sm:text-base font-sans font-medium text-[#666] tracking-wide">{headline}</p>

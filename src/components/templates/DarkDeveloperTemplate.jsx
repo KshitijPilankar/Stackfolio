@@ -45,8 +45,8 @@ export default function DarkDeveloperTemplate({ portfolio }) {
                   <img src={profile_image_url} alt={full_name} className="w-full h-full object-cover" />
                 </div>
               )}
-              <div className="space-y-3 text-center md:text-left flex-1">
-                <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight text-[#F8FAFC]">
+              <div className="space-y-3 text-center md:text-left flex-1 min-w-0">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal] leading-tight text-[#F8FAFC]">
                   {full_name}
                 </h1>
                 <p className="text-lg font-mono text-[#00FFA3] font-bold">

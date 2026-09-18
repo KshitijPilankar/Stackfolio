@@ -38,11 +38,11 @@ export default function NeoBrutalistTemplate({ portfolio, viewMode = 'desktop' }
                 <img src={profile_image_url} alt={full_name} className="w-full h-full object-cover" />
               </div>
             )}
-            <div className="space-y-3 flex-1">
+            <div className="space-y-3 flex-1 min-w-0">
               <div className="inline-block bg-[#FF70A6] text-black font-extrabold px-3 py-1 border-2 border-black rounded-full text-[10px] sm:text-xs uppercase rotate-[-2deg] shadow-[2px_2px_0px_0px_#000]">
                 ★ Portfolio Spotlight
               </div>
-              <h1 className={`${isMobile ? 'text-3xl font-black' : 'text-4xl md:text-6xl font-heading font-black'} tracking-tight leading-none break-words`}>{full_name}</h1>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-tight break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]">{full_name}</h1>
               <p className="text-base sm:text-lg font-heading font-bold text-[#0F172A]/80">{headline}</p>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl font-medium">{bio}</p>
 

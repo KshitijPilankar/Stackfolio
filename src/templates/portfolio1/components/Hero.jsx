@@ -9,13 +9,13 @@ export default function Hero({ data = {} }) {
 
   return (
     <section id="hero" className="min-h-[80vh] px-6 sm:px-12 py-16 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative">
-      <div className="lg:col-span-8 space-y-6">
+      <div className="lg:col-span-8 space-y-6 min-w-0 flex-1">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FFE600]/10 border border-[#FFE600]/30 rounded-full text-xs font-mono font-bold text-[#FFE600]">
           <Sparkles className="w-3.5 h-3.5 text-[#FFE600]" />
           <span>3D INTERACTIVE DEVELOPER ARCHITECTURE</span>
         </div>
 
-        <h1 className="text-6xl sm:text-8xl font-black text-white leading-none tracking-tight uppercase font-heading">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight uppercase font-heading break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]">
           {name}
         </h1>
 

@@ -33,8 +33,8 @@ export default function BentoGridTemplate({ portfolio, viewMode = 'desktop' }) {
             {profile_image_url && (
               <img src={profile_image_url} alt={full_name} className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border border-[#E5E5E5] shrink-0" />
             )}
-            <div className="space-y-2">
-              <h1 className={`${isMobile ? 'text-2xl font-black' : 'text-3xl md:text-4xl font-extrabold'} tracking-tight text-[#111] break-words`}>{full_name}</h1>
+            <div className="space-y-2 min-w-0 flex-1">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-[#111] break-words overflow-visible whitespace-normal [hyphens:manual] [word-break:keep-all] sm:[word-break:normal]">{full_name}</h1>
               <p className="text-sm sm:text-base font-medium text-[#666]">{headline}</p>
               <p className="text-xs sm:text-sm text-[#888] leading-relaxed max-w-lg">{bio}</p>
             </div>
