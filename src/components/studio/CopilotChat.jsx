@@ -10,7 +10,14 @@ const QUICK_GRID_ACTIONS = [
   { id: 'howto', label: 'How to?', icon: HelpCircle, prompt: '📄 How do I customize my portfolio slug and domain?' }
 ];
 
-export default function CopilotChat({ schema, onApplyPrompt, isGenerating: externalGenerating, auditResult }) {
+export default function CopilotChat({
+  schema,
+  onApplyPrompt,
+  isGenerating: externalGenerating,
+  auditResult,
+  onOptimizeXYZBullets,
+  onEnhanceVisualBalance
+}) {
   const [activeTab, setActiveTab] = useState('chat'); // 'chat' | 'audit'
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -75,6 +82,22 @@ export default function CopilotChat({ schema, onApplyPrompt, isGenerating: exter
       setInternalGenerating(false);
     }
   }, [input, isGenerating, onApplyPrompt, selectedModel]);
+
+  const handleOptimizeXYZBullets = () => {
+    if (onOptimizeXYZBullets) {
+      onOptimizeXYZBullets();
+    } else {
+      handleSend("Rewrite all work experience bullet points using Google's XYZ formula: Accomplished [X], as measured by [Y], by doing [Z]. Make them quantified and high impact.");
+    }
+  };
+
+  const handleEnhanceVisualBalance = () => {
+    if (onEnhanceVisualBalance) {
+      onEnhanceVisualBalance();
+    } else {
+      handleSend("Enhance visual balance across all portfolio sections by auto-adjusting container padding to p-6 md:p-12, section gaps to space-y-16, and high contrast design tokens.");
+    }
+  };
 
   return (
     <aside className="w-full lg:w-[332px] bg-white border-l-[2.5px] border-black flex flex-col h-full shrink-0 text-slate-900 select-none shadow-[-4px_0px_0px_#000000] z-30 font-sans">
@@ -243,7 +266,7 @@ export default function CopilotChat({ schema, onApplyPrompt, isGenerating: exter
 
           <div className="space-y-3">
             {/* 1. Recruiter Agent */}
-            <div className="bg-white border-2 border-black rounded-xl p-3.5 shadow-[3px_3px_0px_#000] space-y-2">
+            <div className="bg-white border-2 border-black rounded-xl p-3.5 shadow-[3px_3px_0px_#000] space-y-2.5">
               <div className="flex items-center justify-between font-extrabold">
                 <span className="flex items-center gap-1.5 text-blue-700">
                   <Cpu className="w-4 h-4" /> Recruiter Agent
@@ -255,6 +278,15 @@ export default function CopilotChat({ schema, onApplyPrompt, isGenerating: exter
               <p className="text-[11px] text-slate-600 font-sans font-medium">
                 Google XYZ Metrics: <strong>{criticAudit.xyzMetricCount}</strong> • Quantified Ratio: <strong>{Math.round(criticAudit.quantifiedBulletRatio * 100)}%</strong>
               </p>
+              
+              <button
+                type="button"
+                onClick={handleOptimizeXYZBullets}
+                className="w-full py-1.5 px-2.5 bg-[#FFE600] hover:bg-[#ebd300] text-black font-extrabold text-[11px] rounded-lg border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-black" />
+                <span>Auto-Optimize XYZ Bullets</span>
+              </button>
             </div>
 
             {/* 2. Architect Agent */}
@@ -273,7 +305,7 @@ export default function CopilotChat({ schema, onApplyPrompt, isGenerating: exter
             </div>
 
             {/* 3. Critic Agent */}
-            <div className="bg-white border-2 border-black rounded-xl p-3.5 shadow-[3px_3px_0px_#000] space-y-2">
+            <div className="bg-white border-2 border-black rounded-xl p-3.5 shadow-[3px_3px_0px_#000] space-y-2.5">
               <div className="flex items-center justify-between font-extrabold">
                 <span className="flex items-center gap-1.5 text-amber-700">
                   <CheckCircle2 className="w-4 h-4" /> Critic Agent
@@ -285,6 +317,15 @@ export default function CopilotChat({ schema, onApplyPrompt, isGenerating: exter
               <p className="text-[11px] text-slate-600 font-sans font-medium">
                 Weak Bullet Verbs: <strong>{criticAudit.weakBulletPoints?.length || 0}</strong> • Status: <strong>{criticAudit.passedThreshold ? 'PASSED' : 'NEEDS IMPROVEMENT'}</strong>
               </p>
+
+              <button
+                type="button"
+                onClick={handleEnhanceVisualBalance}
+                className="w-full py-1.5 px-2.5 bg-[#4DEEEA] hover:bg-[#3cdad6] text-black font-extrabold text-[11px] rounded-lg border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Palette className="w-3.5 h-3.5 text-black" />
+                <span>Enhance Visual Balance</span>
+              </button>
             </div>
 
             {/* 4. Sentinel Agent */}
@@ -338,7 +379,6 @@ export default function CopilotChat({ schema, onApplyPrompt, isGenerating: exter
 
             <div className="flex items-center justify-between border-t-2 border-black/10 pt-2">
               <div className="flex items-center space-x-1.5 text-black">
-                {/* Compact Model Selector Dropdown */}
                 <ModelSelectorDropdown
                   selectedModel={selectedModel}
                   onSelect={setSelectedModel}

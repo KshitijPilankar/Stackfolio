@@ -95,26 +95,70 @@ export function getExportableCode(data) {
     ];
   }
 
+  // Determine active archetype / preset & derive dynamic theme tokens
+  const rawArchetype = data.archetype || data.selected_template || data.preset || data.theme?.template || 'bento-minimal';
+  const normArchetype = String(rawArchetype).toLowerCase();
+
+  let tokens = {
+    fontFamily: { heading: 'font-sans', body: 'font-sans', mono: 'font-mono' },
+    colors: {
+      background: 'bg-slate-50',
+      surface: 'bg-white border-slate-200 shadow-sm',
+      surfaceBorder: 'border-slate-200',
+      textPrimary: 'text-slate-900',
+      textMuted: 'text-slate-600',
+      accentPrimary: 'bg-slate-900 text-white hover:bg-slate-800',
+      accentSecondary: 'bg-amber-100 text-amber-900',
+      accentBorder: 'border-amber-300'
+    },
+    borderRadius: { card: 'rounded-2xl', badge: 'rounded-lg', button: 'rounded-xl' },
+    spacing: { containerPadding: 'p-6 md:p-12', sectionGap: 'space-y-16' },
+    effects: { cardShadow: 'shadow-md', hoverTransform: 'hover:-translate-y-1 transition-transform' }
+  };
+
+  if (normArchetype.includes('cyber') || normArchetype.includes('terminal') || normArchetype.includes('dark')) {
+    tokens.colors = {
+      background: 'bg-slate-950',
+      surface: 'bg-slate-900',
+      surfaceBorder: 'border-cyan-500/30',
+      textPrimary: 'text-slate-100',
+      textMuted: 'text-slate-400',
+      accentPrimary: 'bg-cyan-400 text-slate-950 font-bold',
+      accentSecondary: 'bg-cyan-950 text-cyan-400',
+      accentBorder: 'border-cyan-500/30'
+    };
+    tokens.borderRadius = { card: 'rounded-xl', badge: 'rounded-md', button: 'rounded-lg' };
+  } else if (normArchetype.includes('brutalist')) {
+    tokens.colors = {
+      background: 'bg-[#FFFDF8]',
+      surface: 'bg-white',
+      surfaceBorder: 'border-2 border-black',
+      textPrimary: 'text-black',
+      textMuted: 'text-slate-700',
+      accentPrimary: 'bg-[#FFE600] text-black font-black',
+      accentSecondary: 'bg-pink-300 text-black',
+      accentBorder: 'border-2 border-black'
+    };
+    tokens.borderRadius = { card: 'rounded-xl', badge: 'rounded-md', button: 'rounded-lg' };
+    tokens.effects = { cardShadow: 'shadow-[4px_4px_0px_#000]', hoverTransform: 'hover:translate-x-[1px] hover:translate-y-[1px] transition-transform' };
+  } else if (normArchetype.includes('editorial') || normArchetype.includes('warm')) {
+    tokens.colors = {
+      background: 'bg-[#FDFBF7]',
+      surface: 'bg-white',
+      surfaceBorder: 'border-amber-200/60',
+      textPrimary: 'text-stone-900',
+      textMuted: 'text-stone-600',
+      accentPrimary: 'bg-[#C2410C] text-white font-bold',
+      accentSecondary: 'bg-orange-100 text-orange-900',
+      accentBorder: 'border-orange-200'
+    };
+  }
+
   const blueprint = {
     id: 'blueprint-export',
-    preset: data.preset || data.selected_template || 'linear-sleek',
-    archetypeCluster: data.archetype || 'product-fullstack',
-    designTokens: {
-      fontFamily: { heading: 'font-sans', body: 'font-sans', mono: 'font-mono' },
-      colors: {
-        background: 'bg-slate-950',
-        surface: 'bg-slate-900',
-        surfaceBorder: 'border-slate-800',
-        textPrimary: 'text-slate-100',
-        textMuted: 'text-slate-400',
-        accentPrimary: 'bg-amber-400 text-slate-950',
-        accentSecondary: 'bg-amber-400/10 text-amber-400',
-        accentBorder: 'border-amber-400/30'
-      },
-      borderRadius: { card: 'rounded-xl', badge: 'rounded-md', button: 'rounded-lg' },
-      spacing: { containerPadding: 'p-6 md:p-12', sectionGap: 'space-y-16' },
-      effects: { cardShadow: 'shadow-lg', hoverTransform: 'hover:-translate-y-1 transition-transform' }
-    },
+    preset: rawArchetype,
+    archetypeCluster: rawArchetype,
+    designTokens: tokens,
     sectionOrder: ['hero', 'experience', 'projects', 'skills'],
     sectionVariants: { hero: 'hero-split' }
   };

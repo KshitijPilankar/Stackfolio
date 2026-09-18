@@ -4,6 +4,26 @@ import { supabase } from '../lib/supabaseClient';
 import TemplateRenderer from '../components/templates/TemplateRenderer';
 import { Loader2, ArrowLeft } from 'lucide-react';
 
+const getActiveTemplateForDemo = () => {
+  try {
+    for (const key of ['stackfolio_studio_draft', 'stackfolio_portfolio_schema', 'stackfolio_active_draft']) {
+      const s = localStorage.getItem(key);
+      if (s) {
+        const p = JSON.parse(s);
+        const a = p.archetype || p.selected_template || p.theme?.template;
+        if (a) {
+          if (a === 'bento-minimal' || a === 'bento_minimal' || a === 'bento-modern') return 'bento_grid';
+          if (a === 'cyber-terminal' || a === 'cyber_terminal') return 'dark_terminal';
+          if (a === 'neo-brutalist' || a === 'neo_brutalist') return 'neo_brutalist';
+          if (a === 'warm-editorial' || a === 'warm_editorial') return 'minimal_editorial';
+          return a;
+        }
+      }
+    }
+  } catch (e) {}
+  return 'bento_grid';
+};
+
 const demoChristopherAmosProfile = {
   id: "demo-christopher-amos",
   full_name: "Christopher Amos",
@@ -14,7 +34,8 @@ const demoChristopherAmosProfile = {
   email: "christopher.amos@dev.io",
   github_url: "https://github.com/christopher-amos",
   linkedin_url: "https://linkedin.com/in/christopher-amos",
-  selected_template: "dark_developer",
+  selected_template: "bento_grid",
+  archetype: "bento-minimal",
   is_published: true,
   public_slug: "christopher-amos",
   experiences: [
@@ -88,6 +109,87 @@ const demoChristopherAmosProfile = {
   ]
 };
 
+function loadDraftFromStorage(public_slug) {
+  const keys = ['stackfolio_studio_draft', 'stackfolio_portfolio_schema', 'stackfolio_active_draft'];
+  for (const key of keys) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed) {
+          const rawArchetype = parsed.archetype || parsed.selected_template || parsed.theme?.template || parsed.metadata?.archetype || 'bento-minimal';
+          let templateKey = rawArchetype;
+
+          if (templateKey === 'bento-minimal' || templateKey === 'bento_minimal' || templateKey === 'bento-modern' || templateKey === 'bento') {
+            templateKey = 'bento_grid';
+          } else if (templateKey === 'cyber-terminal' || templateKey === 'cyber_terminal' || templateKey === 'cyber-ai') {
+            templateKey = 'dark_terminal';
+          } else if (templateKey === 'neo-brutalist' || templateKey === 'neo_brutalist') {
+            templateKey = 'neo_brutalist';
+          } else if (templateKey === 'warm-editorial' || templateKey === 'warm_editorial' || templateKey === 'humanist-light') {
+            templateKey = 'minimal_editorial';
+          }
+
+          // If schema object format (from studio with blocks), convert to portfolio component format:
+          if (parsed.blocks && Array.isArray(parsed.blocks)) {
+            const heroBlock = parsed.blocks.find(b => b.type === 'HeroBlock');
+            const workBlock = parsed.blocks.find(b => b.type === 'ProjectGridBlock');
+            const expBlock = parsed.blocks.find(b => b.type === 'WorkExperienceBlock' || b.type === 'ExperienceBlock');
+            const skillBlock = parsed.blocks.find(b => b.type === 'SkillsBlock' || b.type === 'PillarsBlock');
+
+            return {
+              id: parsed.id || 'studio-draft-local',
+              full_name: heroBlock?.content?.name || parsed.fullName || 'Christopher Amos',
+              headline: heroBlock?.content?.headline || parsed.headline || 'Senior Software & Cloud Systems Engineer',
+              bio: heroBlock?.content?.bio || parsed.bio || 'Passionate Systems Architect building scalable web engines.',
+              email: heroBlock?.content?.email || parsed.email || 'christopher.amos@dev.io',
+              github_url: heroBlock?.content?.github || parsed.github_url || 'https://github.com/christopher-amos',
+              linkedin_url: parsed.linkedin_url || 'https://linkedin.com/in/christopher-amos',
+              selected_template: templateKey,
+              archetype: rawArchetype,
+              is_published: true,
+              public_slug: public_slug,
+              experiences: expBlock?.content?.items?.map((e, i) => ({
+                id: `exp-${i}`,
+                company: e.company || '',
+                role: e.role || '',
+                start_date: e.startDate || e.start_date || '',
+                end_date: e.endDate || e.end_date || 'Present',
+                description: e.description || '',
+                display_order: i + 1
+              })) || demoChristopherAmosProfile.experiences,
+              projects: workBlock?.content?.items?.map((p, i) => ({
+                id: `proj-${i}`,
+                title: p.title || '',
+                description: p.description || '',
+                technologies: p.tags || p.technologies || ['React', 'TypeScript'],
+                github_url: p.link || p.github_url || 'https://github.com',
+                live_url: p.link || p.live_url || 'https://example.com',
+                display_order: i + 1
+              })) || demoChristopherAmosProfile.projects,
+              skills: skillBlock?.content?.categories?.flatMap((c, ci) => (c.skills || []).map((s, si) => ({
+                id: `s-${ci}-${si}`,
+                name: s,
+                category: c.category || 'Technical',
+                display_order: ci * 10 + si
+              }))) || demoChristopherAmosProfile.skills,
+              education: demoChristopherAmosProfile.education,
+              achievements: demoChristopherAmosProfile.achievements
+            };
+          }
+
+          return {
+            ...parsed,
+            selected_template: templateKey,
+            archetype: rawArchetype
+          };
+        }
+      }
+    } catch (e) {}
+  }
+  return null;
+}
+
 export default function PublicPortfolioPage() {
   const { public_slug } = useParams();
   const [portfolio, setPortfolio] = useState(null);
@@ -99,24 +201,12 @@ export default function PublicPortfolioPage() {
       setLoading(true);
       setError(null);
       try {
-        // 1. Check local draft storage first
-        const activeDraftRaw = localStorage.getItem('stackfolio_active_draft');
-        if (activeDraftRaw) {
-          try {
-            const parsed = JSON.parse(activeDraftRaw);
-            if (
-              parsed &&
-              (parsed.public_slug === public_slug ||
-                public_slug === 'preview' ||
-                public_slug === 'christopher-amos' ||
-                public_slug === 'my-portfolio' ||
-                public_slug === 'aarya-shah-r4x9')
-            ) {
-              setPortfolio(parsed);
-              setLoading(false);
-              return;
-            }
-          } catch (e) {}
+        // 1. Check local draft storage across all studio keys
+        const localDraft = loadDraftFromStorage(public_slug);
+        if (localDraft) {
+          setPortfolio(localDraft);
+          setLoading(false);
+          return;
         }
 
         // 2. Fetch from Supabase database
@@ -152,8 +242,11 @@ export default function PublicPortfolioPage() {
             return [...(arr || [])].sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
           };
 
+          const activeTpl = data.selected_template || getActiveTemplateForDemo();
+
           setPortfolio({
             ...data,
+            selected_template: activeTpl,
             experiences: sortByDisplayOrder(data.experiences),
             education: sortByDisplayOrder(data.education),
             projects: sortByDisplayOrder(data.projects),
@@ -162,14 +255,21 @@ export default function PublicPortfolioPage() {
           });
         } else if (public_slug === 'christopher-amos' || public_slug === 'preview' || public_slug === 'aarya-shah-r4x9') {
           // Direct local fallback for christopher-amos & demo slugs
-          setPortfolio(demoChristopherAmosProfile);
+          const fallbackProfile = {
+            ...demoChristopherAmosProfile,
+            selected_template: getActiveTemplateForDemo()
+          };
+          setPortfolio(fallbackProfile);
         } else {
           setPortfolio(null);
         }
       } catch (err) {
         console.error('Error fetching public portfolio:', err);
         if (public_slug === 'christopher-amos' || public_slug === 'preview') {
-          setPortfolio(demoChristopherAmosProfile);
+          setPortfolio({
+            ...demoChristopherAmosProfile,
+            selected_template: getActiveTemplateForDemo()
+          });
         } else {
           setError(err.message || 'Failed to load portfolio.');
         }
@@ -195,7 +295,7 @@ export default function PublicPortfolioPage() {
   if (error || !portfolio) {
     return (
       <div className="min-h-screen bg-grid-pattern text-[#0F172A] font-sans flex flex-col items-center justify-center p-6 border-t-8 border-black">
-        <div className="max-w-md w-full bg-[#FFE600] border-3 border-black p-8 rounded-2xl shadow-brutal text-center space-y-6">
+        <div className="max-w-md w-full bg-white border-3 border-black p-8 rounded-2xl shadow-brutal text-center space-y-6">
           <div className="w-16 h-16 rounded-full bg-[#FF70A6] border-2 border-black flex items-center justify-center text-black font-black text-xl mx-auto shadow-[2px_2px_0px_0px_#000]">
             !
           </div>
@@ -217,6 +317,6 @@ export default function PublicPortfolioPage() {
     );
   }
 
-  // Render clean dynamic portfolio template without editor controls
+  // Render clean dynamic portfolio template matching exact active archetype
   return <TemplateRenderer portfolio={portfolio} />;
 }

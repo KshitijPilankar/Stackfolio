@@ -19,9 +19,12 @@ export function generateProductionNextjsCode(
   const skills = candidate.skills || [];
   const experiences = candidate.workExperience || [];
   const projects = candidate.projects || [];
-  const archetype = blueprint.archetypeCluster || 'product-fullstack';
-  const preset = blueprint.preset || 'linear-sleek';
+  const archetype = blueprint.archetypeCluster || 'bento-minimal';
+  const preset = blueprint.preset || 'bento-minimal';
   const tokens = blueprint.designTokens;
+
+  const isBento = preset.includes('bento') || archetype.includes('bento');
+  const isLight = isBento || preset.includes('editorial') || preset.includes('brutalist');
 
   return `// StackFolio Production Export - Next.js 14 / Tailwind Component
 // Archetype Cluster: ${archetype}
@@ -89,8 +92,8 @@ export default function PortfolioPage() {
             <div className="p-6 ${tokens.colors.surface} border ${tokens.colors.surfaceBorder} ${tokens.borderRadius.card} ${tokens.effects.cardShadow} space-y-3">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <div>
-                  <h3 className="font-bold text-base text-white">${exp.role}</h3>
-                  <p className="text-xs text-amber-400 font-mono">${exp.company}</p>
+                  <h3 className="font-bold text-base ${tokens.colors.textPrimary}">${exp.role}</h3>
+                  <p className="text-xs font-mono font-bold ${tokens.colors.textMuted}">${exp.company}</p>
                 </div>
                 <span className="text-xs ${tokens.colors.textMuted} font-mono">${exp.startDate || ''} - ${exp.endDate || 'Present'}</span>
               </div>
@@ -109,14 +112,14 @@ export default function PortfolioPage() {
             ${projects.map(proj => `
             <div className="p-6 ${tokens.colors.surface} border ${tokens.colors.surfaceBorder} ${tokens.borderRadius.card} ${tokens.effects.cardShadow} ${tokens.effects.hoverTransform} flex flex-col justify-between space-y-4">
               <div className="space-y-2">
-                <h3 className="font-bold text-lg text-white">${proj.title}</h3>
+                <h3 className="font-bold text-lg ${tokens.colors.textPrimary}">${proj.title}</h3>
                 <p className="text-xs ${tokens.colors.textMuted} leading-relaxed">${proj.description.replace(/"/g, '&quot;')}</p>
               </div>
               <div className="flex items-center gap-4 text-xs font-mono pt-3 border-t ${tokens.colors.surfaceBorder}">
-                ${proj.githubUrl ? `<a href="${proj.githubUrl}" target="_blank" rel="noreferrer" className="text-amber-400 hover:underline flex items-center gap-1">
+                ${proj.githubUrl ? `<a href="${proj.githubUrl}" target="_blank" rel="noreferrer" className="${isLight ? 'text-slate-900' : 'text-amber-400'} hover:underline flex items-center gap-1 font-bold">
                   <Github className="w-3.5 h-3.5" /> Code
                 </a>` : ''}
-                ${proj.liveUrl ? `<a href="${proj.liveUrl}" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline flex items-center gap-1">
+                ${proj.liveUrl ? `<a href="${proj.liveUrl}" target="_blank" rel="noreferrer" className="${isLight ? 'text-blue-600' : 'text-cyan-400'} hover:underline flex items-center gap-1 font-bold">
                   <ExternalLink className="w-3.5 h-3.5" /> Demo
                 </a>` : ''}
               </div>
@@ -138,9 +141,13 @@ export default function PortfolioPage() {
           </div>
         </motion.section>` : ''}
 
-        {/* FOOTER */}
-        <footer className="pt-12 border-t ${tokens.colors.surfaceBorder} text-center text-xs ${tokens.colors.textMuted} font-mono">
+        {/* FOOTER WITH SENTINEL SECURITY BADGE */}
+        <footer className="pt-12 border-t ${tokens.colors.surfaceBorder} flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${tokens.colors.textMuted} font-mono">
           <p>© {new Date().getFullYear()} ${name}. Built with StackFolio.</p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 rounded-full text-xs font-bold">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Security & PII Verified</span>
+          </div>
         </footer>
 
       </div>

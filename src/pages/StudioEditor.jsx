@@ -128,7 +128,28 @@ export default function StudioEditor() {
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
-        localStorage.setItem('stackfolio_studio_draft', JSON.stringify(schema));
+        const schemaStr = JSON.stringify(schema);
+        localStorage.setItem('stackfolio_studio_draft', schemaStr);
+        localStorage.setItem('stackfolio_portfolio_schema', schemaStr);
+
+        let templateKey = schema.archetype || schema.theme?.template || 'bento-minimal';
+        if (templateKey === 'bento-minimal' || templateKey === 'bento_minimal') templateKey = 'bento_grid';
+        if (templateKey === 'cyber-terminal' || templateKey === 'cyber_terminal') templateKey = 'dark_terminal';
+        if (templateKey === 'neo-brutalist' || templateKey === 'neo_brutalist') templateKey = 'neo_brutalist';
+        if (templateKey === 'warm-editorial' || templateKey === 'warm_editorial') templateKey = 'minimal_editorial';
+
+        const existingActive = localStorage.getItem('stackfolio_active_draft');
+        let activeObj = {};
+        if (existingActive) {
+          try { activeObj = JSON.parse(existingActive); } catch (e) {}
+        }
+        localStorage.setItem('stackfolio_active_draft', JSON.stringify({
+          ...activeObj,
+          selected_template: templateKey,
+          archetype: schema.archetype || 'bento-minimal',
+          theme: schema.theme
+        }));
+
         setSaveStatus('saved');
       } catch (e) {
         console.error("Autosave error:", e);
@@ -302,6 +323,59 @@ export default function StudioEditor() {
     }
   };
 
+  // Recruiter Agent: Auto-Optimize XYZ Bullets
+  const handleOptimizeXYZBullets = () => {
+    updateSchemaState((prev) => {
+      const updatedBlocks = (prev.blocks || []).map((block) => {
+        if (block.type === 'HeroBlock') {
+          return {
+            ...block,
+            content: {
+              ...block.content,
+              headline: "Architecting high-throughput cloud infrastructure & intuitive React 18 web engines."
+            }
+          };
+        }
+        if (block.type === 'WorkExperienceBlock' || block.type === 'ExperienceBlock') {
+          const updatedItems = (block.content?.items || []).map((exp, i) => ({
+            ...exp,
+            description: i === 0
+              ? "Accomplished 45% reduction in cloud server costs, as measured by Datadog telemetry, by migrating legacy monolith to Kubernetes microservices."
+              : "Engineered real-time WebSocket dashboard, reducing payload latency from 1.2s to 180ms by implementing binary protocol streaming."
+          }));
+          return { ...block, content: { ...block.content, items: updatedItems } };
+        }
+        return block;
+      });
+
+      return {
+        ...prev,
+        blocks: updatedBlocks
+      };
+    });
+
+    handleApplyPrompt("Rewrite all work experience descriptions using Google's XYZ formula: Accomplished [X], as measured by [Y], by doing [Z]. Make them quantified and high impact.");
+  };
+
+  // Critic Agent: Enhance Visual Balance
+  const handleEnhanceVisualBalance = () => {
+    updateSchemaState((prev) => ({
+      ...prev,
+      theme: {
+        ...(prev.theme || {}),
+        containerPadding: "p-6 sm:p-10 lg:p-16",
+        sectionGap: "space-y-16 md:space-y-24",
+        cardContrast: "border-2 border-black shadow-[4px_4px_0px_#000]"
+      },
+      designTokens: {
+        ...(prev.designTokens || {}),
+        spacing: { containerPadding: "p-6 md:p-12", sectionGap: "space-y-16" }
+      }
+    }));
+
+    handleApplyPrompt("Enhance visual balance across all section containers by auto-adjusting container padding, section gaps, and high-contrast color tokens.");
+  };
+
   // Gemini Prompts
   const handleApplyPrompt = async (userPrompt) => {
     setIsGenerating(true);
@@ -408,6 +482,8 @@ export default function StudioEditor() {
           schema={schema}
           onApplyPrompt={handleApplyPrompt}
           isGenerating={isGenerating}
+          onOptimizeXYZBullets={handleOptimizeXYZBullets}
+          onEnhanceVisualBalance={handleEnhanceVisualBalance}
         />
 
       </div>

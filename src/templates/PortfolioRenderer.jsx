@@ -143,6 +143,42 @@ export const TEMPLATE_REGISTRY = {
     badge: 'NEW',
     reference: 'https://zsofia.pro/',
   },
+  'bento-minimal': {
+    id: 'bento_grid',
+    component: BentoGridTemplate,
+    name: 'Bento Minimal',
+    archetype: 'BENTO MODULAR',
+  },
+  bento_minimal: {
+    id: 'bento_grid',
+    component: BentoGridTemplate,
+    name: 'Bento Minimal',
+    archetype: 'BENTO MODULAR',
+  },
+  'cyber-terminal': {
+    id: 'dark_terminal',
+    component: DarkTerminalTemplate,
+    name: 'Cyber Terminal',
+    archetype: 'CLI OBSIDIAN',
+  },
+  cyber_terminal: {
+    id: 'dark_terminal',
+    component: DarkTerminalTemplate,
+    name: 'Cyber Terminal',
+    archetype: 'CLI OBSIDIAN',
+  },
+  'warm-editorial': {
+    id: 'minimal_editorial',
+    component: MinimalEditorialTemplate,
+    name: 'Warm Editorial',
+    archetype: 'SWISS EDITORIAL',
+  },
+  warm_editorial: {
+    id: 'minimal_editorial',
+    component: MinimalEditorialTemplate,
+    name: 'Warm Editorial',
+    archetype: 'SWISS EDITORIAL',
+  },
 };
 
 export const TEMPLATE_LIST = Object.values(TEMPLATE_REGISTRY);
@@ -175,9 +211,15 @@ export default function PortfolioRenderer({ portfolio, viewMode = 'desktop' }) {
     );
   }
 
-  const rawKey = portfolio.selected_template || 'dark_terminal';
-  const normalizedKey = rawKey.replace(/-/g, '_');
-  const templateEntry = TEMPLATE_REGISTRY[normalizedKey] || TEMPLATE_REGISTRY[rawKey] || TEMPLATE_REGISTRY['dark_developer'];
+  let rawKey = portfolio.selected_template || portfolio.archetype || portfolio.theme?.template || 'bento_grid';
+  let sKey = String(rawKey).toLowerCase().trim();
+  if (sKey === 'bento-minimal' || sKey === 'bento_minimal' || sKey === 'bento') sKey = 'bento_grid';
+  if (sKey === 'cyber-terminal' || sKey === 'cyber_terminal') sKey = 'dark_terminal';
+  if (sKey === 'warm-editorial' || sKey === 'warm_editorial') sKey = 'minimal_editorial';
+  if (sKey === 'neo-brutalist' || sKey === 'neo_brutalist') sKey = 'neo_brutalist';
+
+  const normalizedKey = sKey.replace(/-/g, '_');
+  const templateEntry = TEMPLATE_REGISTRY[sKey] || TEMPLATE_REGISTRY[normalizedKey] || TEMPLATE_REGISTRY[rawKey] || TEMPLATE_REGISTRY['bento_grid'];
   const ActiveTemplate = templateEntry.component;
 
   return (
