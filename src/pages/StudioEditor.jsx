@@ -6,6 +6,7 @@ import CanvasPreview from '../components/studio/CanvasPreview';
 import CopilotChat from '../components/studio/CopilotChat';
 import StudioSettingsModal from '../components/studio/StudioSettingsModal';
 import ConnectDomainModal from '../components/studio/ConnectDomainModal';
+import ExportModal from '../components/studio/ExportModal';
 import { useStudioTheme } from '../context/ThemeContext';
 import { initialPortfolioSchema } from '../types/schema';
 import { generatePortfolioSchema, processUserPrompt, morphSchemaArchetype } from '../lib/geminiBuilder';
@@ -19,6 +20,7 @@ export default function StudioEditor() {
   const [saveStatus, setSaveStatus] = useState('saved');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDomainModalOpen, setIsDomainModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   // History Stack (past, present, future) with LocalStorage restoration
   const [history, setHistory] = useState(() => {
@@ -319,14 +321,7 @@ export default function StudioEditor() {
 
   // Publish / Export Schema
   const handlePublish = () => {
-    const jsonStr = JSON.stringify(schema, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `portfolio-schema-${schema?.metadata?.slug || 'export'}.json`;
-    a.click();
-    URL.revokeObjectURL(a);
+    setIsExportModalOpen(true);
   };
 
   const currentSelectedStyle = selectedElement?.key
@@ -429,6 +424,13 @@ export default function StudioEditor() {
         onClose={() => setIsDomainModalOpen(false)}
         connectedDomain={schema?.metadata?.customDomain}
         onSaveDomain={handleConnectDomain}
+      />
+
+      {/* Export & Publish Modal */}
+      <ExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        schema={schema}
       />
 
     </div>
